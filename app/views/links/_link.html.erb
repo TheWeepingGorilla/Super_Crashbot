@@ -1,0 +1,7 @@
+<li><%= "#{link.link} - #{link.date}" %>
+        <%= link_to "Add Comment", new_comment_path(:referring_link_id => link.id) %>
+        <%= link_to "Edit",edit_link_path(link) %>
+        <%= link_to "Delete", link_path(link), :data => {:confirm => "You sure?", :method => "delete"} %>
+    </li>
+    <%= render partial: "comment", locals: { comments_to_display: link.comments } %>
+

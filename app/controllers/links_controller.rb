@@ -14,7 +14,10 @@ class LinksController < ApplicationController
     @link = Link.new(link_params)
     if @link.save
       flash[:notice] = "Link created."
-      redirect_to links_path
+      respond_to do |format|
+        format.html { redirect_to links_path }
+        format.js
+      end
     else
       render 'new'
     end

@@ -1,14 +1,11 @@
 <h1>Welcome to Crashbot - Your Source for Robot War Events</h1>
-<ul>
-  <% @links.each do |link| %>
-    <br>
-    <li><%= "#{link.link} - #{link.date}" %>
-        <%= link_to "Add Comment", new_comment_path(:referring_link_id => link.id) %>
-        <%= link_to "Edit",edit_link_path(link) %>
-        <%= link_to "Delete", link_path(link), :data => {:confirm => "You sure?", :method => "delete"} %>
-    </li>
-    <%= render partial: "comment", locals: { comments_to_display: link.comments } %>
-  <% end %>
+<ul id="links">
+  <%= render @links %>
 </ul>
 <br>
-<%= link_to "New Link", new_link_path, :class=> "btn btn-success" %>
+<%= link_to "New Link", new_link_path, :class=> "btn btn-success", id: "add_link", remote: true %>
+
+
+<!-- <div class="tasks" id="incomplete_tasks">
+  <%= render @links %>
+</div> -->

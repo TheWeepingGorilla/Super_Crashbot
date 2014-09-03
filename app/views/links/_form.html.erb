@@ -7,7 +7,7 @@
   </ul>
 <% end %>
 
-<%= form_for(@link) do |f| %>
+<%= form_for @link, remote: true do |f| %>
   <div class="form-group">
     <%= f.label :link %>
     <%= f.text_field :link %>
