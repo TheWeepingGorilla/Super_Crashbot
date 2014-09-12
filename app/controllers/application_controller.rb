@@ -1,10 +1,14 @@
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :null_session
 
   def authorize
     redirect_to login_url, alert: "Not authorized" if current_user.nil?
+  end
+
+  def format_json?
+    request.format.json?
   end
 
   private

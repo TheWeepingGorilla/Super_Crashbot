@@ -1,25 +1,45 @@
 class LinksController < ApplicationController
 
-  before_filter :authorize, only: [:new, :edit, :update, :destroy]
+  before_filter :authorize, only: [:new, :edit, :update, :destroy], :unless => :format_json?
 
   def index
     @links = Link.all
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @links }
+    end
   end
 
   def new
     @link = Link.new
   end
 
+  def show
+    @link = Link.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @link }
+    end
+  end
+
+
   def create
     @link = Link.new(link_params)
     if @link.save
-      flash[:notice] = "Link created."
       respond_to do |format|
-        format.html { redirect_to links_path }
-        format.js
+        format.html do
+          flash[:notice] = "Link created."
+          redirect_to links_path
+        end
+        format.json { render :json => @link, :status => 201 }
       end
     else
-      render 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render :json => @link.errors, :status => 422 }
+      end
     end
   end
 
@@ -40,12 +60,19 @@ class LinksController < ApplicationController
   def destroy
     @link = Link.find(params[:id])
     @link.destroy
-    flash[:notice] = "Link deleted."
-    redirect_to links_path
+
+    respond_to do |format|
+      format.html do
+        flash[:notice] = "Link deleted."
+        redirect_to links_path
+      end
+      format.json { head :no_content }
+    end
   end
 
   private
   def link_params
     params.require(:link).permit(:link, :vote, :rating, :date)
   end
+
 end
